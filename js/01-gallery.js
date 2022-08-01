@@ -16,7 +16,7 @@ const imgMarkup = createGallleryMarkup(galleryItems);
 
 gallaryContainer.insertAdjacentHTML('beforeend', imgMarkup)
 
-console.log(createGallleryMarkup(galleryItems))
+gallaryContainer.addEventListener('click', onImageClick);
 
 function createGallleryMarkup(galleryItems){
     return galleryItems.map(({ preview, original, description }) => { 
@@ -33,3 +33,24 @@ function createGallleryMarkup(galleryItems){
     }).join('');
 };
 
+function onImageClick(e){
+    e.preventDefault();
+    const targetImg = e.target.classList.contains('gallery__image');
+
+    if (!targetImg) {
+            return;
+        } 
+        const urlImg = e.target.dataset.source;
+        
+        const bigPicture = basicLightbox.create(`<img src="${urlImg}">`);
+        bigPicture.show(() => window.addEventListener('keydown', onKeyDown));
+        
+        function onKeyDown(e) {
+            if (e.key === 'Escape') {
+                bigPicture.close(() => window.removeEventListener('keydown', onKeyDown));
+                return;
+            }
+            return;
+        };
+        
+};
